@@ -51,8 +51,15 @@ if __name__ == '__main__':
     url1 = 'http://cohd.io/api/association/obsExpRatio?dataset_id=1&concept_id_1=192853&domain=Procedure'
     url2 = 'http://cohd.io/api/association/obsExpRatio?dataset_id=1&concept_id_1=192854&domain=Procedure'
 
-    res0 = requests.get(url0)
+    t = time.time()
     res1 = requests.get(url1)
+    print(time.time() - t)
+    t = time.time()
+    res1 = requests.get(url1)
+    print(time.time() - t)
+    t = time.time()
+    res1 = requests.get(url1)
+    print(time.time() - t)
 
     t = time.time()
     print(get_timestamp(url0))
