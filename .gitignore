@@ -102,3 +102,12 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# sqlite
+*.sqlite
+
+# .idea
+.idea/
+
+# DS_Store
+.DS_Store
