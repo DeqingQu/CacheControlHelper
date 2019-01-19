@@ -2,7 +2,7 @@ import calendar
 from cachecontrol.heuristics import BaseHeuristic
 from datetime import datetime, timedelta
 from email.utils import parsedate, formatdate
-from requests import Session
+import requests
 from cachecontrol import CacheControl
 from cachecontrol.caches.file_cache import FileCache
 import time
@@ -30,7 +30,7 @@ class CustomHeuristic(BaseHeuristic):
 class CacheControlHelper(object):
 
     def __init__(self):
-        self.sess = CacheControl(Session(), heuristic=CustomHeuristic(days=30), cache=FileCache('.web_cache'))
+        self.sess = CacheControl(requests.session(), heuristic=CustomHeuristic(days=30), cache=FileCache('.web_cache'))
 
     def get(self, url):
         return self.sess.get(url)
