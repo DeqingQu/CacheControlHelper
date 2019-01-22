@@ -30,8 +30,13 @@ class CacheControlHelper(object):
 
     def __init__(self):
         self.sess = CacheControl(requests.session(), heuristic=CustomHeuristic(days=30), cache=FileCache('.web_cache'))
+        self.exceptions = requests.exceptions
 
-    def get(self, url):
-        return self.sess.get(url, timeout=120)
+    def get(self, url, timeout=120, cookies=None):
+        if cookies:
+            return self.sess.get(url, timeout=timeout, cookies=cookies)
+        else:
+            return self.sess.get(url, timeout=timeout)
 
-    exceptions = requests.exceptions
+    def post(self, url, data):
+        return self.sess.post(url, data=data)
