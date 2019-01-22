@@ -5,7 +5,6 @@ from email.utils import parsedate, formatdate
 import requests
 from cachecontrol import CacheControl
 from cachecontrol.caches.file_cache import FileCache
-import time
 
 
 class CustomHeuristic(BaseHeuristic):
@@ -15,7 +14,7 @@ class CustomHeuristic(BaseHeuristic):
 
     def update_headers(self, response):
         date = parsedate(response.headers['date'])
-        expires = datetime(*date[:6]) + timedelta(seconds=self.days)
+        expires = datetime(*date[:6]) + timedelta(days=self.days)
         print(formatdate(calendar.timegm(expires.timetuple())))
         return {
             'expires': formatdate(calendar.timegm(expires.timetuple())),
@@ -33,4 +32,6 @@ class CacheControlHelper(object):
         self.sess = CacheControl(requests.session(), heuristic=CustomHeuristic(days=30), cache=FileCache('.web_cache'))
 
     def get(self, url):
-        return self.sess.get(url)
+        return self.sess.get(url, timeout=120)
+
+    exceptions = requests.exceptions
