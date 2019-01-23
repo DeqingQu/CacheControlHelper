@@ -11,7 +11,24 @@ Required Modules:
 </code></pre>
 
 Demo:
-<pre><code>req = CacheControlHelper()
-res = req.get('http://google.com')
-assert res.from_cache
+<pre><code>def get_request(url):
+    requests = CacheControlHelper()
+    try:
+        res = requests.get(url, timeout=120)
+    except requests.exceptions.Timeout:
+        print(url, file=sys.stderr)
+        print('Timeout for URL: ' + url, file=sys.stderr)
+        return None
+    except KeyboardInterrupt:
+        sys.exit(0)
+    except BaseException as e:
+        print(url, file=sys.stderr)
+        print('%s received for URL: %s' % (e, url), file=sys.stderr)
+        return None
+    status_code = res.status_code
+    if status_code != 200:
+        print(url, file=sys.stderr)
+        print('Status code ' + str(status_code) + ' for url: ' + url, file=sys.stderr)
+        return None
+    return res.json()
 </code></pre>
